@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View , Button, Alert, TextInput, FlatList} from 'react-native';
+import { StyleSheet, Text, View , Button, TextInput, FlatList, ScrollView} from 'react-native';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -8,17 +8,23 @@ export default class App extends React.Component {
       text: '',
       list: []
     };
+    this.changeText = this.changeText.bind(this);
+    this.addNew = this.addNew.bind(this);
   }
 
-  changeText = text => {
-    this.setState({ text: text });
+  changeText = (t) => {
+    const text = t;
+    this.setState({ text });
   };
   
   addNew = () => {
+    let list = this.state.list;
+    list.push(this.state.text);
     this.setState(() => ({
-      list: this.state.list.push(this.state.text),
+      list: list,
       text: '',
     }));
+    console.log(list[0]);
   };
 
   render() {
@@ -36,17 +42,10 @@ export default class App extends React.Component {
           title="+"
         />
         <FlatList
-          style={styles.list}
-          list={this.state.list}
-          renderRow={(rowData) => {
-            return (
-              <View style={styles.todoItem}>
-                <Text style={styles.todoText}>{rowData}</Text>
-              </View>
-              );
-            }
-          }
-        />
+        data={this.state.list}
+        renderItem={this.state.text}
+      />
+           
       </View>
     );
   }
